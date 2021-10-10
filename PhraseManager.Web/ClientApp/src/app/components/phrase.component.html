@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<h1 id="tableLabel">Get and Save Terms and Definitions</h1>
+
+<p>Please provide the term and it's definition to add to the database</p>
+<div class="border rounded pl-3">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group mb-2">
+        <label class="mr-2">Term</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedPhrase.term" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group mx-sm-3 mb-2">
+        <label class="mr-2">Definition</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedPhrase.definition" />
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="isEditing" class="row">
+    <button (click)="update()" type="submit" class="btn btn-primary w-25 mb-2 ml-3 float-right">Update</button>
+    <button (click)="cancel()" type="submit" class="btn btn-light w-25 mb-2 ml-3 float-right">Cancel</button>
+  </div>
+  <div *ngIf="!isEditing" class="row">
+    <button (click)="add()" type="submit" class="btn btn-primary w-25 mb-2 ml-3 float-right">Add</button>
+  </div>
+</div>
+
+<div *ngIf="showAlert" class="alert alert-danger" role="alert">
+  {{errorMessage}}
+</div>
+
+
+<p *ngIf="isWorking"><app-spinner></app-spinner></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="phrases">
+  <thead>
+    <tr>
+      <th><a href="#" (click)="sort('term')">Term <i *ngIf="sortAscending" class="fa fa-sort-alpha-asc" aria-hidden="true"></i><i *ngIf="!sortAscending" class="fa fa-sort-alpha-desc" aria-hidden="true"></i></a></th>
+      <th><a href="#" (click)="sort('definition')">Definition <i *ngIf="sortAscending" class="fa fa-sort-alpha-asc" aria-hidden="true"></i><i *ngIf="!sortAscending" class="fa fa-sort-alpha-desc" aria-hidden="true"></i></a></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let phrase of phrases">
+      <td>{{ phrase.term }}</td>
+      <td>{{ phrase.definition }}</td>
+      <td style="text-align: right; width: 200px;"> <button class="btn btn-dark" (click)="edit(phrase)"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button><button class="btn btn-danger ml-1" (click)="delete(phrase)"><i class="fa fa-trash"></i> Delete</button></td>
+    </tr>
+  </tbody>
+</table>
